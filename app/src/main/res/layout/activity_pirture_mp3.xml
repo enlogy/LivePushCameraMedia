@@ -5,7 +5,7 @@
 <com.example.livepushcameramedia.picture_mp3.PictureMp3SurfaceView
     android:id="@+id/mSurfaceView"
     android:layout_width="match_parent"
-    android:layout_height="300dp"/>
+    android:layout_height="200dp"/>
     <Button
         android:id="@+id/mEncodeBtn"
         android:layout_width="match_parent"

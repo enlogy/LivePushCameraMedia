@@ -99,7 +99,7 @@ class PictureMp3Render(var context: Context):EGLSurfaceRender {
             0,
             GLES20.GL_RGBA,
             1080,
-            1920,
+            600,
             0,
             GLES20.GL_RGBA,
             GLES20.GL_UNSIGNED_BYTE,

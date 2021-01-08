@@ -47,10 +47,13 @@ class CameraRender(var context: Context) : EGLSurfaceRender,
     private var program = 0
     private lateinit var fbo: IntArray
     private lateinit var vbo: IntArray
-    private val fboRender = FboRender(context)
+    private var fboRender = FboRender(context)
+    private var bwRender = FboBlackWhiteRender(context)
     var surfaceTextureListener: SurfaceTextureListener? = null
     private lateinit var surfaceTexture: SurfaceTexture
-
+    private var mWidth = 0
+    private var mHeight = 0
+    private var isBlackWhite = false
     init {
         vertexBuffer = ByteBuffer.allocateDirect(vertexPoints.size * 4)
             .order(ByteOrder.nativeOrder())
@@ -164,11 +167,15 @@ class CameraRender(var context: Context) : EGLSurfaceRender,
         uMatrix = GLES20.glGetUniformLocation(program, "u_Matrix")
 
         fboRender.onCreate()
+        bwRender.onCreate()
     }
 
     override fun onSurfaceChanged(width: Int, height: Int) {
+        this.mWidth = width
+        this.mHeight = height
         GLES20.glViewport(0, 0, width, height)
         fboRender.onChange(width, height)
+        bwRender.onChange(width, height)
         //通过矩阵改变摄像头的显示角度
         Matrix.setIdentityM(matrix, 0)
         val rotation = ScreenUtils.getScreenRotation(context as Activity)
@@ -196,12 +203,17 @@ class CameraRender(var context: Context) : EGLSurfaceRender,
         //fbo
         GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fbo[0])
         //渲染fbo的texture生成一个图片
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, imgTextureId)
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, fboTextureId)
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4)
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0)
         GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0)
         //绘制fbo中的texture
-        fboRender.onDraw(fboTextureId)
+        if (isBlackWhite){
+            bwRender.onDraw(fboTextureId)
+        }else{
+            fboRender.onDraw(fboTextureId)
+        }
+
     }
 
     private fun loadTexture(resId: Int): Int {
@@ -227,5 +239,7 @@ class CameraRender(var context: Context) : EGLSurfaceRender,
     override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
 
     }
-
+    fun setBlackWhiteRender(){
+        isBlackWhite = !isBlackWhite
+    }
 }

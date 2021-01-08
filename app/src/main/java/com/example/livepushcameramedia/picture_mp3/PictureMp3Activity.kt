@@ -35,7 +35,7 @@ class PictureMp3Activity :AppCompatActivity(){
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun onPcmInfo(samplerate: Int, bit: Int, channels: Int) {
                 mPictureMp3MediaEncoder = PictureMp3MediaEncoder(this@PictureMp3Activity,mSurfaceView.getTextureId())
-                mPictureMp3MediaEncoder!!.initMediaEncoder(mSurfaceView.getEglContext(),1080,1920,
+                mPictureMp3MediaEncoder!!.initMediaEncoder(mSurfaceView.getEglContext(),1080,600,
                     MediaFormat.MIMETYPE_VIDEO_AVC,PathUtils.getInternalAppFilesPath() + "/Mp3Picture.mp4",
                     MediaFormat.MIMETYPE_AUDIO_AAC,samplerate,channels)
                 mPictureMp3MediaEncoder!!.startRecord()

@@ -7,6 +7,10 @@ import android.util.AttributeSet
 import com.example.livepushcameramedia.egl.EGLSurfaceView
 
 class CameraSurfaceView : EGLSurfaceView {
+    fun setBlackWhiteRender() {
+        cameraRender.setBlackWhiteRender()
+    }
+
     private var cameraRender: CameraRender
     private lateinit var camera: GLCamera
 
